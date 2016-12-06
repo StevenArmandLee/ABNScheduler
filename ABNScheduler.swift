@@ -37,7 +37,7 @@ class ABNScheduler {
     ///- attention: iOS by default allows a maximum of 64 notifications to be scheduled
     /// at a time.
     ///- seealso: `MAX_ALLOWED_NOTIFICATIONS`
-    static let maximumScheduledNotifications = 60
+    static let maximumScheduledNotifications = 256
     
     /// The key of the notification's identifier.
     private let identifierKey = "ABNIdentifier"
@@ -315,14 +315,14 @@ private class ABNQueue : NSObject {
     ///Save queue on disk.
     ///- returns: The success of the saving operation.
     private func save() -> Bool {
-        return NSKeyedArchiver.archiveRootObject(self.notifQueue, toFile: ArchiveURL.path!)
+        return NSKeyedArchiver.archiveRootObject(self.notifQueue, toFile: ArchiveURL!.path!)
     }
     
     ///Load queue from disk.
     ///Called first when instantiating the ABNQueue singleton.
     ///You do not need to manually call this method and therefore do not declare it as public.
     private func load() -> [ABNotification]? {
-        return NSKeyedUnarchiver.unarchiveObjectWithFile(ArchiveURL.path!) as? Array<ABNotification>
+        return NSKeyedUnarchiver.unarchiveObjectWithFile(ArchiveURL!.path!) as? Array<ABNotification>
     }
     
 }
