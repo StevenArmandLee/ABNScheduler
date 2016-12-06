@@ -44,7 +44,7 @@ class ABNSchedulerTests: XCTestCase {
     
     func testNotificationSchedule() {
         let note = ABNotification(alertBody: "test")
-        note.schedule(fireDate: NSDate().nextHours(1))
+        note.schedule(fireDate: Date().nextHours(1))
         
         XCTAssertNotNil(note.userInfo[ABNScheduler.identifierKey])
         XCTAssertEqual(true, note.isScheduled())
@@ -52,7 +52,7 @@ class ABNSchedulerTests: XCTestCase {
     }
     
     func testNotificationClassSchedule() {
-        let identifier = ABNScheduler.schedule(alertBody: "test", fireDate: NSDate().nextHours(1))
+        let identifier = ABNScheduler.schedule(alertBody: "test", fireDate: Date().nextHours(1))
         let note = ABNScheduler.notificationWithIdentifier(identifier!)
         
         XCTAssertNotNil(note?.userInfo[ABNScheduler.identifierKey])
@@ -62,7 +62,7 @@ class ABNSchedulerTests: XCTestCase {
     
     func testNotificationQueue() {
         for _ in 1...99 {
-            ABNScheduler.schedule(alertBody: "test", fireDate: NSDate().nextHours(1))
+            ABNScheduler.schedule(alertBody: "test", fireDate: Date().nextHours(1))
         }
         
         XCTAssertEqual(60, ABNScheduler.scheduledCount())
@@ -71,7 +71,7 @@ class ABNSchedulerTests: XCTestCase {
     
     func testNotificationCancel() {
         let note = ABNotification(alertBody: "test")
-        note.schedule(fireDate: NSDate().nextHours(1))
+        note.schedule(fireDate: Date().nextHours(1))
         note.cancel()
         
         XCTAssertEqual(false, note.isScheduled())
@@ -80,7 +80,7 @@ class ABNSchedulerTests: XCTestCase {
     
     func testNotificationsCancel() {
         for _ in 1...99 {
-            ABNScheduler.schedule(alertBody: "test", fireDate: NSDate().nextHours(1))
+            ABNScheduler.schedule(alertBody: "test", fireDate: Date().nextHours(1))
         }
         ABNScheduler.cancelAllNotifications()
         
@@ -89,16 +89,16 @@ class ABNSchedulerTests: XCTestCase {
     
     func testFarthestNotification() {
         for i in 1...5 {
-            ABNScheduler.schedule(alertBody: "test #\(i)", fireDate: NSDate().nextHours(i))
+            ABNScheduler.schedule(alertBody: "test #\(i)", fireDate: Date().nextHours(i))
         }
         
         XCTAssertEqual("test #5", ABNScheduler.farthestLocalNotification()?.alertBody)
     }
     
     func testNotificationWithIdentifier() {
-        ABNScheduler.schedule(alertBody: "test #1", fireDate: NSDate().nextHours(1))
-        ABNScheduler.schedule(alertBody: "test #2", fireDate: NSDate().nextHours(2))
-        let identifier = ABNScheduler.schedule(alertBody: "test #3", fireDate: NSDate().nextHours(3))
+        ABNScheduler.schedule(alertBody: "test #1", fireDate: Date().nextHours(1))
+        ABNScheduler.schedule(alertBody: "test #2", fireDate: Date().nextHours(2))
+        let identifier = ABNScheduler.schedule(alertBody: "test #3", fireDate: Date().nextHours(3))
         let note = ABNScheduler.notificationWithIdentifier(identifier!)
         
         XCTAssertEqual("test #3", note?.alertBody)
@@ -106,7 +106,7 @@ class ABNSchedulerTests: XCTestCase {
     
     func testScheduledNotifications() {
         for i in 1...15 {
-            ABNScheduler.schedule(alertBody: "test #\(i)", fireDate: NSDate().nextHours(i))
+            ABNScheduler.schedule(alertBody: "test #\(i)", fireDate: Date().nextHours(i))
         }
         
         XCTAssertEqual(15, ABNScheduler.scheduledNotifications()?.count)
@@ -114,7 +114,7 @@ class ABNSchedulerTests: XCTestCase {
     
     func testScheduleNotificationsFromQueue() {
         for _ in 1...99 {
-            ABNScheduler.schedule(alertBody: "test", fireDate: NSDate().nextHours(1))
+            ABNScheduler.schedule(alertBody: "test", fireDate: Date().nextHours(1))
         }
         
         for _ in 1...4 {
@@ -131,8 +131,8 @@ class ABNSchedulerTests: XCTestCase {
     }
     
     func testNotificationWithUILocalNotification() {
-        ABNScheduler.schedule(alertBody: "test", fireDate: NSDate().nextHours(1))
-        let localNote = UIApplication.sharedApplication().scheduledLocalNotifications?.last
+        ABNScheduler.schedule(alertBody: "test", fireDate: Date().nextHours(1))
+        let localNote = UIApplication.shared.scheduledLocalNotifications?.last
         let note = ABNScheduler.notificationWithUILocalNotification(localNote!)
         
         XCTAssertEqual("test", note.alertBody)
@@ -142,7 +142,7 @@ class ABNSchedulerTests: XCTestCase {
     }
     
     func testIsScheduled() {
-        let identifier = ABNScheduler.schedule(alertBody: "test", fireDate: NSDate().nextHours(1))
+        let identifier = ABNScheduler.schedule(alertBody: "test", fireDate: Date().nextHours(1))
         let note = ABNScheduler.notificationWithIdentifier(identifier!)
         
         XCTAssertEqual(true, note?.isScheduled())
@@ -153,7 +153,7 @@ class ABNSchedulerTests: XCTestCase {
     }
     
     func testNotificationReschedule() {
-        let identifier = ABNScheduler.schedule(alertBody: "test", fireDate: NSDate().nextHours(1))
+        let identifier = ABNScheduler.schedule(alertBody: "test", fireDate: Date().nextHours(1))
         let note = ABNScheduler.notificationWithIdentifier(identifier!)
         
         let date = note?.fireDate
@@ -164,7 +164,7 @@ class ABNSchedulerTests: XCTestCase {
     }
     
     func testNotificationMinutesSnooze() {
-        let identifier = ABNScheduler.schedule(alertBody: "test", fireDate: NSDate().nextHours(1))
+        let identifier = ABNScheduler.schedule(alertBody: "test", fireDate: Date().nextHours(1))
         let note = ABNScheduler.notificationWithIdentifier(identifier!)
         
         let date = note?.fireDate
@@ -175,7 +175,7 @@ class ABNSchedulerTests: XCTestCase {
     }
     
     func testNotificationHoursSnooze() {
-        let identifier = ABNScheduler.schedule(alertBody: "test", fireDate: NSDate().nextHours(1))
+        let identifier = ABNScheduler.schedule(alertBody: "test", fireDate: Date().nextHours(1))
         let note = ABNScheduler.notificationWithIdentifier(identifier!)
         
         let date = note?.fireDate
@@ -185,7 +185,7 @@ class ABNSchedulerTests: XCTestCase {
         XCTAssertEqual(true, note?.isScheduled())
     }
     
-    func testNotificationDaysSnooze() {let identifier = ABNScheduler.schedule(alertBody: "test", fireDate: NSDate().nextHours(1))
+    func testNotificationDaysSnooze() {let identifier = ABNScheduler.schedule(alertBody: "test", fireDate: Date().nextHours(1))
         let note = ABNScheduler.notificationWithIdentifier(identifier!)
         
         let date = note?.fireDate
